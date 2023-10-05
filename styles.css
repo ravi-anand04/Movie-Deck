@@ -72,6 +72,7 @@ footer {
 .details {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   margin-top: 5%;
 }
 
@@ -92,4 +93,9 @@ footer {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+.delete {
+  font-size: 1.5rem;
+  cursor: pointer;
 }

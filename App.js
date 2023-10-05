@@ -5,14 +5,56 @@ document.onreadystatechange = () => {
   renderFavourites();
 };
 
+let data;
+
 async function fetchMovies() {
   const response = await fetch(
     "https://api.themoviedb.org/3/movie/top_rated?api_key=f531333d637d0c44abc85b3e74db2186&language=en-US&page=1"
   );
-  const data = await response.json();
-  displayMovies(data);
+  const moviesJSON = await response.json();
+  data = moviesJSON.results;
+  displayMovies();
   //   console.log(data);
 }
+
+const sortDate = document.getElementById("sortDate");
+const sortRating = document.getElementById("sortRating");
+
+const search = document.getElementById("search");
+const submit = document.getElementById("submit");
+
+const allMovies = document.getElementById("all");
+
+submit.addEventListener("click", async () => {
+  const query = search.value;
+  const response = await fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${API_URL}`
+  );
+
+  const movieJSON = await response.json();
+  console.log(movieJSON);
+
+  data = movieJSON.results;
+  allMovies.innerHTML = "";
+  displayMovies();
+  search.value = "";
+});
+
+sortRating.addEventListener("click", () => {
+  const compare = (a, b) => a.vote_average - b.vote_average;
+  data.sort(compare);
+  allMovies.innerHTML = "";
+  console.log("sort by rating");
+  displayMovies();
+});
+
+sortDate.addEventListener("click", () => {
+  const compare = (a, b) => new Date(a.release_date) - new Date(b.release_date);
+  data.sort(compare);
+  allMovies.innerHTML = "";
+  console.log("sort by date");
+  displayMovies();
+});
 
 const allFavourites = document.getElementById("favourites");
 
@@ -48,8 +90,8 @@ function renderFavourites() {
       average.innerText = `Votes: ${vote_average}`;
       rating.append(count);
       rating.append(average);
-      favourite.innerText = "♡";
-      favourite.className = "favourite";
+      favourite.innerText = "❌";
+      favourite.className = "delete";
       details.appendChild(rating);
       card.classList.add("card");
       details.appendChild(favourite);
@@ -57,19 +99,32 @@ function renderFavourites() {
       card.appendChild(movieTitle);
       card.appendChild(details);
       allFavourites.appendChild(card);
+
+      favourite.addEventListener("click", () => {
+        let currentState = JSON.parse(localStorage.getItem("fav_movies"));
+
+        const updatedFav = currentState.filter(
+          (currentMovie) => movie.title != currentMovie.title
+        );
+        localStorage.removeItem("fav_movies");
+        allFavourites.innerText = "";
+        localStorage.setItem("fav_movies", JSON.stringify(updatedFav));
+        renderFavourites();
+      });
     });
 }
 
-const allMovies = document.getElementById("all");
-
-function displayMovies(data) {
+function displayMovies() {
   {
-    data.results &&
-      data.results.map((movie) => {
-        const { poster_path, title, vote_average, vote_count } = movie;
+    data &&
+      data.map((movie) => {
+        const { poster_path, title, vote_average, vote_count, backdrop_path } =
+          movie;
         const card = document.createElement("div");
         const img = document.createElement("img");
-        const image = `https://image.tmdb.org/t/p/original/${poster_path}`;
+        const image = `https://image.tmdb.org/t/p/original/${
+          !poster_path ? backdrop_path : poster_path
+        }`;
         img.src = image;
         img.classList.add("image");
         const movieTitle = document.createElement("h5");
@@ -83,8 +138,8 @@ function displayMovies(data) {
         const average = document.createElement("p");
 
         movieTitle.innerText = `${title}`;
-        count.innerText = `Rating: ${vote_count}`;
-        average.innerText = `Votes: ${vote_average}`;
+        count.innerText = `Votes: ${vote_count}`;
+        average.innerText = `Rating: ${vote_average}`;
         rating.append(count);
         rating.append(average);
         favourite.innerText = "♡";
