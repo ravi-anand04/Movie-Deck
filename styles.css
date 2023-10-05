@@ -1,1 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@300;500;700&family=Poppins:wght@700&family=Young+Serif&display=swap");
 
+* {
+  box-sizing: border-box;
+  font-family: "Poppins";
+}
+
+header a {
+  text-decoration: none;
+  color: white;
+}
+
+header {
+  background-color: rgb(74, 74, 74);
+  padding: 10px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  gap: 1%;
+}
+
+input {
+  width: 400px;
+  border-radius: 10px;
+}
+
+.sort {
+  display: flex;
+  justify-content: center;
+  gap: 5%;
+}
+
+.search input {
+  padding: 5px 15px;
+}
+
+footer {
+  text-align: center;
+}
