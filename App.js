@@ -1,11 +1,11 @@
 const API_URL = "0ccf42b563e9163039e2af471107c917";
+let data,
+  currentPage = 1;
 
 document.onreadystatechange = () => {
   fetchMovies();
   renderFavourites();
 };
-
-let data;
 
 async function fetchMovies() {
   const response = await fetch(
@@ -25,10 +25,53 @@ const submit = document.getElementById("submit");
 
 const allMovies = document.getElementById("all");
 
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+const current = document.getElementById("current");
+
+prev.addEventListener("click", async () => {
+  current.innerText = `Current: ${--currentPage}`;
+  if (currentPage == 1) {
+    prev.classList.add("btn-disabled");
+  }
+
+  if (currentPage < 5) {
+    next.classList.remove("btn-disabled");
+  }
+
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_URL}&language=en-US&page=${currentPage}`
+  );
+  const moviesJSON = await response.json();
+  data = moviesJSON.results;
+  allMovies.innerHTML = "";
+  displayMovies();
+});
+
+next.addEventListener("click", async () => {
+  current.innerText = `Current: ${++currentPage}`;
+  if (currentPage == 5) {
+    next.classList.add("btn-disabled");
+  }
+
+  if (currentPage > 1) {
+    prev.classList.remove("btn-disabled");
+  }
+
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_URL}&language=en-US&page=${currentPage}`
+  );
+  const moviesJSON = await response.json();
+  data = moviesJSON.results;
+  allMovies.innerHTML = "";
+  displayMovies();
+});
+
 submit.addEventListener("click", async () => {
   const query = search.value;
   const response = await fetch(
     `https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${API_URL}`
+    // &language=en-US&page=1
   );
 
   const movieJSON = await response.json();

@@ -99,3 +99,13 @@ footer {
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+.page {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
