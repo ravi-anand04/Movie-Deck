@@ -11,5 +11,7 @@ Has a dedicated section for favorite movies
 **Technologies Used**
 
 **Frontend**: HTML, CSS, JS
+
 **APIs**: The Movie Database (TMDb)
+
 **Deployment**: https://tmdb-movie-deck.netlify.app/
