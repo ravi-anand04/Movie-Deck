@@ -7,7 +7,8 @@ It provides information about movies, including details and ratings.
 
 1. Search for movies by title.
 2. Has a dedicated section for favorite movies.
-3. Pagination support
+3. Pagination support.
+   
 **Technologies Used**
 
 **Frontend**: HTML, CSS, JS
