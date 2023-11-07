@@ -5,8 +5,8 @@ It provides information about movies, including details and ratings.
 
 **Features**
 
-Search for movies by title
-Has a dedicated section for favorite movies
+1. Search for movies by title.
+2. Has a dedicated section for favorite movies.
 
 **Technologies Used**
 
